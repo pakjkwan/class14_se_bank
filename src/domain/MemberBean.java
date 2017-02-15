@@ -1,7 +1,8 @@
 package domain;
 
 public class MemberBean {
-	protected String uid,name,ssn,password,profileImg,phone,email,rank;
+	protected String uid,name,ssn,password,
+		profileImg,phone,email,rank;
 	
 	public void setSsn(String ssn){
 		this.ssn = ssn ;

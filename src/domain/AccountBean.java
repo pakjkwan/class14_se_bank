@@ -1,6 +1,12 @@
 package domain;
-public class AccountBean {
-	protected String uid,accountType,createDate,money,accountNo;
+
+import java.io.Serializable;
+
+public class AccountBean implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+	protected String uid,accountType,createDate,
+		money,accountNo;
 	
 	public void setMoney(String money){
 		this.money=money;

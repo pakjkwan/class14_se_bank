@@ -1,69 +1,86 @@
 package serviceImpl;
-
 import service.AdminService;
 import domain.MemberBean;
-public class AdminServiceImpl implements AdminService{
-	private MemberBean member;
-	private MemberBean[] arr;
+import java.util.*;
 
-	private int count;
+public class AdminServiceImpl implements AdminService{
+	private Map<String,MemberBean> map;
 	public AdminServiceImpl() {
-		member = new MemberBean();
-		count = 0;
-		arr = new MemberBean[count];
+		map = new HashMap<String,MemberBean>();
 	}
 	@Override
 	public void regist(MemberBean member) {
-		// 회원정보를 입력한 후 배열에 저장하기
-		if(count == arr.length ){
-			MemberBean[] temp = new MemberBean[count+10];
-			System.arraycopy(arr, 0, temp, 0, count);
-			arr = temp;
-		}
-		arr[count]=member;
-		count++;
+		map.put(member.getUid(),member);
 	}
-
 	@Override
 	public MemberBean findById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return map.get(id);
 	}
-
 	@Override
-	public MemberBean[] findByName(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<MemberBean> findByName(String name) {
+		List<MemberBean> list = new ArrayList<MemberBean>();
+		for(MemberBean m : memberlist()){
+			if(name.equals(m.getName())){
+				list.add(m);
+			}
+		}
+		return list;
 	}
-
 	@Override
-	public int countByName(String name) {
-		// TODO Auto-generated method stub
-		return 0;
+	public List<MemberBean> memberlist() {
+		List<MemberBean> list=new ArrayList<MemberBean>();
+		for(Map.Entry<String, MemberBean> e: map.entrySet()){
+			list.add(e.getValue());
+		}
+		return list;
 	}
-
-	@Override
-	public MemberBean[] list() {
-		// 전체목록 출력
-		return arr;
-	}
-
 	@Override
 	public int count() {
-		return count;
+		return map.size();
 	}
-
 	@Override
-	public void changeRank(MemberBean member) {
-		// TODO Auto-generated method stub
-		
+	public void update(MemberBean member) {
+		for(MemberBean m:memberlist()){
+			if(member.getUid().equals(m.getUid())){
+				m.setName((member.getName().equals(""))?m.getName():member.getName());
+				m.setPassword((member.getPassword().equals(""))?m.getPassword():member.getPassword());
+				m.setProfileImg((member.getProfileImg().equals(""))?m.getProfileImg():member.getProfileImg());
+				m.setPhone((member.getPhone().equals(""))?m.getPhone():member.getPhone());
+				m.setEmail((member.getEmail().equals(""))?m.getEmail():member.getEmail());
+				m.setRank((member.getRank().equals(""))?m.getRank():member.getRank());
+				break;
+			}
+		}
 	}
-
 	@Override
-	public void remove(MemberBean member) {
-		// TODO Auto-generated method stub
-		
+	public void remove(String id) {
+		map.remove(id);
 	}
-
+	@Override
+	public Map<String, MemberBean> mapFindByName(String name) {
+		Map<String, MemberBean> temp=new HashMap<String, MemberBean>();
+		for (Map.Entry<String, MemberBean>e : map.entrySet()) {
+			if(name.equals(e.getValue().getName())){
+				temp.put(e.getKey(), e.getValue());
+			}
+		}
+		return temp;
+	}
+	@Override
+	public List<String> keylist() {
+		List<String> list=new ArrayList<String>();
+		for(Map.Entry<String, MemberBean> e: map.entrySet()){
+			list.add(e.getKey());
+		}
+		return list;
+	}
 	
 }
+
+
+
+
+
+
+
+
